@@ -1,0 +1,20 @@
+.user-root-container {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+  width: 300px;
+  border: 1px solid black;
+  box-sizing: border-box;
+  padding: 20px;
+}
+.root-container-users {
+  height: 30px;
+  width: 100%;
+  border: 1px solid black;
+  border-radius: 5px;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}

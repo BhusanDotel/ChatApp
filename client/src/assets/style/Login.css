@@ -1,0 +1,36 @@
+.login-root {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 100px;
+}
+.login-container {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 10px;
+  width: 450px;
+}
+.login-username-field,
+.login-password-field {
+  height: 30px;
+  border: 1px solid black;
+  border-radius: 10px;
+  outline: none;
+  padding-left: 10px;
+  width: 100%;
+}
+.login-button {
+  background-color: green;
+  color: white;
+  height: 30px;
+  border: none;
+  outline: none;
+  border-radius: 10px;
+  cursor: pointer;
+  width: 100%;
+}
+.login-button:active {
+  transform: scale(0.9);
+}
