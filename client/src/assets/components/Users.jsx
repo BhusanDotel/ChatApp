@@ -4,13 +4,24 @@ import { StateContext } from "../context/StateContext";
 import "../style/Users.css";
 
 function Users() {
-  const { setReceiverName } = React.useContext(StateContext);
+  const { setReceiverName, myUserName } = React.useContext(StateContext);
   const [users, setUsers] = React.useState([]);
 
   React.useEffect(() => {
     async function getUsers() {
-      const response = await axios.get("http://localhost:3000/api/fetchuser");
-      setUsers(response.data);
+      try {
+        const response = await axios.get("http://localhost:3000/api/fetchuser");
+        if (response.data) {
+          const userArray = [...response.data];
+          if (userArray.includes(myUserName)) {
+            const myUserNameIndex = userArray.indexOf(myUserName);
+            userArray.splice(myUserNameIndex, 1);
+            setUsers(userArray);
+          }
+        }
+      } catch (error) {
+        console.log(error);
+      }
     }
     getUsers();
   }, []);

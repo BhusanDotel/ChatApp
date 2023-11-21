@@ -12,27 +12,33 @@ const register = async (req, res) => {
     dp: "",
     // chats: [
     //   {
-    //     j5s44f6a5sd: [
-    //       {
-    //         message: "",
-    //         time: "",
-    //       },
-    //       {
-    //         message: "",
-    //         time: "",
-    //       },
+    //     Ronaldo: [
+    //       { message: "hello", timeStamp: 1 },
+    //       { message: "k cha?", timeStamp: 3 },
+    //       { message: "kata chau?", timeStamp: 5 },
+    //       { message: "Ae ae", timeStamp: 6 },
+    //       { message: "k gardai chau?", timeStamp: 7 },
+    //       { message: "kata chau?", timeStamp: 11 },
+    //       { message: "Ae ae", timeStamp: 12 },
+    //       { message: "k gardai chau?", timeStamp: 13 },
+    //       { message: "kata chau?", timeStamp: 14 },
+    //       { message: "Ae ae", timeStamp: 15 },
+    //       { message: "k gardai chau?", timeStamp: 16 },
     //     ],
     //   },
     //   {
-    //     s5d4as54d6a: [
-    //       {
-    //         message: "",
-    //         time: "",
-    //       },
-    //       {
-    //         message: "",
-    //         time: "",
-    //       },
+    //     Bob: [
+    //       { message: "hello", timeStamp: 1 },
+    //       { message: "k cha?", timeStamp: 3 },
+    //       { message: "kata chau?", timeStamp: 5 },
+    //       { message: "Ae ae", timeStamp: 6 },
+    //       { message: "k gardai chau?", timeStamp: 7 },
+    //       { message: "kata chau?", timeStamp: 11 },
+    //       { message: "Ae ae", timeStamp: 12 },
+    //       { message: "k gardai chau?", timeStamp: 13 },
+    //       { message: "kata chau?", timeStamp: 14 },
+    //       { message: "Ae ae", timeStamp: 15 },
+    //       { message: "k gardai chau?", timeStamp: 16 },
     //     ],
     //   },
     // ],

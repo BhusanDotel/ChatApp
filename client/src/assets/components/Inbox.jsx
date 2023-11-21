@@ -1,6 +1,7 @@
 import React from "react";
 import "../style/Inbox.css";
 import { StateContext } from "../context/StateContext";
+import { users } from "../Data/Users";
 import axios from "axios";
 
 function Inbox() {
@@ -9,39 +10,56 @@ function Inbox() {
   const [chatSent, setChatSent] = React.useState([]);
   const [chatReceived, setChatReceived] = React.useState([]);
 
-  // React.useEffect(() => {
-  //   async function getData() {
-  //     const response = await axios.get("http://localhost:3000/api/chat");
-  //     console.log(response.data);
-  //   }
-  //   getData();
-  // });
-  const chatSend = [
-    { message: "hello", timeStamp: 1 },
-    { message: "k cha?", timeStamp: 3 },
-    { message: "kata chau?", timeStamp: 5 },
-    { message: "Ae ae", timeStamp: 6 },
-    { message: "k gardai chau?", timeStamp: 7 },
-    { message: "kata chau?", timeStamp: 11 },
-    { message: "Ae ae", timeStamp: 12 },
-    { message: "k gardai chau?", timeStamp: 13 },
-    { message: "kata chau?", timeStamp: 14 },
-    { message: "Ae ae", timeStamp: 15 },
-    { message: "k gardai chau?", timeStamp: 16 },
-  ];
-  const chatReceive = [
-    { message: "hi", timeStamp: 2 },
-    { message: "thi cha?", timeStamp: 4 },
-    { message: "ma yetai gharr", timeStamp: 5 },
-    { message: "ma yettikai ho yar", timeStamp: 8 },
-    { message: "ahni gaun kailey aauney?", timeStamp: 9 },
-    { message: "demo", timeStamp: 10 },
-  ];
+  let timeStamp = 0;
+  React.useEffect(() => {
+    // console.log("sender: " + myUserName);
+    // console.log("Reciever: " + receiverName);
+    users.forEach((item) => {
+      if (item.username === myUserName) {
+        const chats = item.chats;
+        chats.forEach((item) => {
+          if (item[receiverName] !== undefined) {
+            setChatSent(item[receiverName]);
+          }
+        });
+      }
+      if (item.username === receiverName) {
+        const chats = item.chats;
+        chats.forEach((item) => {
+          if (item[myUserName] !== undefined) {
+            setChatReceived(item[myUserName]);
+          }
+        });
+      }
+    });
+  }, []);
 
-  const combinedChat = [...chatSend, ...chatReceive];
+  function getLastTimeStamp() {
+    let lastSentTimeStamp = 0;
+    let lastReceivedTimeStamp = 0;
+    const chatSentLength = chatSent.length;
+    if (chatSent[chatSentLength - 1] !== undefined) {
+      lastSentTimeStamp = chatSent[chatSentLength - 1].timeStamp;
+    }
+
+    const chatRecieveLength = chatReceived.length;
+    if (chatReceived[chatRecieveLength - 1] !== undefined) {
+      lastReceivedTimeStamp = chatReceived[chatRecieveLength - 1].timeStamp;
+    }
+
+    if (lastSentTimeStamp > lastReceivedTimeStamp) {
+      return lastSentTimeStamp;
+    } else {
+      return lastReceivedTimeStamp;
+    }
+  }
+  // getLastTimeStamp();
+  // console.log(getLastTimeStamp());
+
+  const combinedChat = [...chatSent, ...chatReceived];
   combinedChat.sort((a, b) => a.timeStamp - b.timeStamp);
   const renderArray = combinedChat.map((chat, index) => {
-    const className = chatSend.includes(chat)
+    const className = chatSent.includes(chat)
       ? "root-right-recieve-inbox"
       : "root-left-send-inbox";
 
@@ -56,14 +74,34 @@ function Inbox() {
     setMessage(e.target.value);
   };
 
+  const handleClick = () => {
+    if (message !== "") {
+      users.forEach((item) => {
+        if (item.username === myUserName) {
+          const chats = item.chats;
+          chats.forEach((item) => {
+            if (item[receiverName] !== undefined) {
+              const chat = item[receiverName];
+              chat.push({
+                message: message,
+                timeStamp: getLastTimeStamp() + 1,
+              });
+              // console.log(item[receiverName]);
+            }
+          });
+        }
+      });
+    }
+  };
+
   return (
     <>
       <div className="inbox-root-container">
         <div className="inbox-displaychat-container">
-          {receiverName === "empty" && (
+          {receiverName === null && (
             <div className="root-container-clickuser">Click user to chat</div>
           )}
-          {receiverName !== "empty" && (
+          {receiverName !== null && (
             <>
               <div className="inbox-rows">{renderArray}</div>
             </>
@@ -78,7 +116,9 @@ function Inbox() {
             name="message"
             value={message}
           />
-          <div className="inbox-send-message">send</div>
+          <div onClick={handleClick} className="inbox-send-message">
+            send
+          </div>
         </div>
       </div>
     </>
