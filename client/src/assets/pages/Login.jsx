@@ -27,10 +27,12 @@ function Login() {
         })
         .then((res) => {
           if (res.data) {
-            alert(res.data);
-            if (res.data === "Login Successfull!") {
+            if (res.data.userToken) {
+              alert("Login Successfull!");
+              localStorage.setItem("authToken", res.data.userToken);
               localStorage.setItem("sender", username);
               navigate("/");
+              location.reload();
             }
           }
         });

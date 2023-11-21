@@ -1,4 +1,6 @@
 const User = require("../Model/userModel");
+require("dotenv").config();
+const jwt = require("jsonwebtoken");
 
 const register = async (req, res) => {
   const userDemo = {
@@ -54,13 +56,18 @@ const register = async (req, res) => {
   }
 };
 
+const secretKey = process.env.SECRET_KEY;
 const login = async (req, res) => {
   const { username, password } = req.body;
   try {
     const usernameExists = await User.findOne({ "user.username": username });
     if (usernameExists) {
       if (usernameExists.user.password === password) {
-        res.json("Login Successfull!");
+        const uId = {
+          id: usernameExists._id,
+        };
+        const userToken = jwt.sign(uId, secretKey);
+        return res.json({ userToken: userToken });
       } else {
         res.json("Username and password not matched");
       }
