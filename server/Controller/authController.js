@@ -14,23 +14,7 @@ const register = async (req, res) => {
           otp: "",
           isVerified: false,
           dp: "",
-          chats: [
-            // {
-            //   Ronaldo: [
-            //     { message: "hello", timeStamp: 1 },
-            //     { message: "k cha?", timeStamp: 3 },
-            //     { message: "kata chau?", timeStamp: 5 },
-            //     { message: "Ae ae", timeStamp: 6 },
-            //     { message: "k gardai chau?", timeStamp: 7 },
-            //     { message: "kata chau?", timeStamp: 11 },
-            //     { message: "Ae ae", timeStamp: 12 },
-            //     { message: "k gardai chau?", timeStamp: 13 },
-            //     { message: "kata chau?", timeStamp: 14 },
-            //     { message: "Ae ae", timeStamp: 15 },
-            //     { message: "k gardai chau?", timeStamp: 16 },
-            //   ],
-            // },
-          ],
+          chats: [],
         });
         res.json("Registered Successfully!");
       } catch (error) {

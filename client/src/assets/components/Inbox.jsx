@@ -1,7 +1,6 @@
 import React from "react";
 import "../style/Inbox.css";
 import { StateContext } from "../context/StateContext";
-import { users } from "../Data/Users";
 import axios from "axios";
 
 function Inbox() {
@@ -11,56 +10,25 @@ function Inbox() {
   const [chatReceived, setChatReceived] = React.useState([]);
 
   React.useEffect(() => {
-    // console.log("sender: " + myUserName);
-    // console.log("Reciever: " + receiverName);
-
-    axios
-      .post("http://localhost:3000/api/fetchchat", {
-        receiverName,
-        myUserName,
-      })
-      .then((res) => {
-        console.log(res.data);
-      });
-    users.forEach((item) => {
-      if (item.username === myUserName) {
-        const chats = item.chats;
-        chats.forEach((item) => {
-          if (item[receiverName] !== undefined) {
-            setChatSent(item[receiverName]);
+    async function fetchChats() {
+      await axios
+        .post("http://localhost:3000/api/fetchchat", {
+          receiverName,
+          myUserName,
+        })
+        .then((res) => {
+          if (res.data) {
+            if (res.data.chatSent !== undefined) {
+              setChatSent(res.data.chatSent);
+            }
+            if (res.data.chatReceive !== undefined) {
+              setChatReceived(res.data.chatReceive);
+            }
           }
         });
-      }
-      if (item.username === receiverName) {
-        const chats = item.chats;
-        chats.forEach((item) => {
-          if (item[myUserName] !== undefined) {
-            setChatReceived(item[myUserName]);
-          }
-        });
-      }
-    });
-  }, []);
-
-  function getLastTimeStamp() {
-    let lastSentTimeStamp = 0;
-    let lastReceivedTimeStamp = 0;
-    const chatSentLength = chatSent.length;
-    if (chatSent[chatSentLength - 1] !== undefined) {
-      lastSentTimeStamp = chatSent[chatSentLength - 1].timeStamp;
     }
-
-    const chatRecieveLength = chatReceived.length;
-    if (chatReceived[chatRecieveLength - 1] !== undefined) {
-      lastReceivedTimeStamp = chatReceived[chatRecieveLength - 1].timeStamp;
-    }
-
-    if (lastSentTimeStamp > lastReceivedTimeStamp) {
-      return lastSentTimeStamp;
-    } else {
-      return lastReceivedTimeStamp;
-    }
-  }
+    fetchChats();
+  }, [receiverName]);
 
   const combinedChat = [...chatSent, ...chatReceived];
   combinedChat.sort((a, b) => a.timeStamp - b.timeStamp);
@@ -82,12 +50,10 @@ function Inbox() {
 
   const handleClick = async () => {
     if (message !== "") {
-      const lastTimeStamp = getLastTimeStamp() + 1;
       await axios.post("http://localhost:3000/api/pushchat", {
         myUserName,
         receiverName,
         message,
-        lastTimeStamp,
       });
     }
   };

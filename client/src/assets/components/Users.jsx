@@ -41,9 +41,7 @@ function Users() {
   });
   const handleClick = (username) => {
     localStorage.setItem("receiver", username);
-    setReceiverName(() => {
-      return localStorage.getItem("receiver");
-    });
+    setReceiverName(localStorage.getItem("receiver"));
   };
   return <div className="user-root-container">{renderArray}</div>;
 }
