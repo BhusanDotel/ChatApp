@@ -13,6 +13,15 @@ function Inbox() {
   React.useEffect(() => {
     // console.log("sender: " + myUserName);
     // console.log("Reciever: " + receiverName);
+
+    axios
+      .post("http://localhost:3000/api/fetchchat", {
+        receiverName,
+        myUserName,
+      })
+      .then((res) => {
+        console.log(res.data);
+      });
     users.forEach((item) => {
       if (item.username === myUserName) {
         const chats = item.chats;
@@ -71,32 +80,14 @@ function Inbox() {
     setMessage(e.target.value);
   };
 
-  const handleClick = () => {
+  const handleClick = async () => {
     if (message !== "") {
-      let newChat = true;
-      users.forEach((item) => {
-        if (item.username === myUserName) {
-          const chats = item.chats;
-          chats.forEach((item) => {
-            if (item[receiverName] !== undefined) {
-              const chat = item[receiverName];
-              chat.push({
-                message: message,
-                timeStamp: getLastTimeStamp() + 1,
-              });
-              newChat = false;
-            }
-          });
-          if (newChat) {
-            const newMessages = [];
-            newMessages.push({
-              message: message,
-              timeStamp: getLastTimeStamp() + 1,
-            });
-            const newChat = { [receiverName]: newMessages };
-            chats.push(newChat);
-          }
-        }
+      const lastTimeStamp = getLastTimeStamp() + 1;
+      await axios.post("http://localhost:3000/api/pushchat", {
+        myUserName,
+        receiverName,
+        message,
+        lastTimeStamp,
       });
     }
   };

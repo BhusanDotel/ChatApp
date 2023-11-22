@@ -28,11 +28,12 @@ function Login() {
         .then((res) => {
           if (res.data) {
             if (res.data.userToken) {
-              alert("Login Successfull!");
               localStorage.setItem("authToken", res.data.userToken);
               localStorage.setItem("sender", username);
               navigate("/");
               location.reload();
+            } else {
+              alert(res.data);
             }
           }
         });

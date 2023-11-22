@@ -3,6 +3,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const userRoute = require("./routes/userRoute");
+const chatRoute = require("./routes/chatRoute");
 const app = express();
 
 app.use(cors());
@@ -19,6 +20,7 @@ mongoose
   });
 
 app.use("/api", userRoute);
+app.use("/api", chatRoute);
 
 app.listen(3000, () => {
   console.log("App listening on port 3000!");

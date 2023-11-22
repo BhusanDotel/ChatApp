@@ -1,6 +1,6 @@
 export const users = [
   {
-    username: "bhusan",
+    username: "Bhusan",
     email: "bhusan@gmail",
     password: "bhusna123",
     otp: "",
@@ -63,7 +63,7 @@ export const users = [
         ],
       },
       {
-        bhusan: [
+        Bhusan: [
           { message: "hi", timeStamp: 2 },
           { message: "thi cha?", timeStamp: 4 },
           { message: "ma yetai gharr", timeStamp: 5 },
@@ -83,7 +83,7 @@ export const users = [
     dp: "",
     chats: [
       {
-        bhusan: [
+        Bhusan: [
           { message: "hello", timeStamp: 2 },
           { message: "thi cha?", timeStamp: 4 },
           { message: "ma yetai gharr", timeStamp: 5 },
