@@ -10,7 +10,6 @@ function Inbox() {
   const [chatSent, setChatSent] = React.useState([]);
   const [chatReceived, setChatReceived] = React.useState([]);
 
-  let timeStamp = 0;
   React.useEffect(() => {
     // console.log("sender: " + myUserName);
     // console.log("Reciever: " + receiverName);
@@ -53,8 +52,6 @@ function Inbox() {
       return lastReceivedTimeStamp;
     }
   }
-  // getLastTimeStamp();
-  // console.log(getLastTimeStamp());
 
   const combinedChat = [...chatSent, ...chatReceived];
   combinedChat.sort((a, b) => a.timeStamp - b.timeStamp);
@@ -76,6 +73,7 @@ function Inbox() {
 
   const handleClick = () => {
     if (message !== "") {
+      let newChat = true;
       users.forEach((item) => {
         if (item.username === myUserName) {
           const chats = item.chats;
@@ -86,9 +84,18 @@ function Inbox() {
                 message: message,
                 timeStamp: getLastTimeStamp() + 1,
               });
-              // console.log(item[receiverName]);
+              newChat = false;
             }
           });
+          if (newChat) {
+            const newMessages = [];
+            newMessages.push({
+              message: message,
+              timeStamp: getLastTimeStamp() + 1,
+            });
+            const newChat = { [receiverName]: newMessages };
+            chats.push(newChat);
+          }
         }
       });
     }
