@@ -2,12 +2,21 @@ import React from "react";
 import "../style/Inbox.css";
 import { StateContext } from "../context/StateContext";
 import axios from "axios";
+import io from "socket.io-client";
+
+const socket = io.connect("http://localhost:3000");
 
 function Inbox() {
   const { receiverName, myUserName } = React.useContext(StateContext);
   const [message, setMessage] = React.useState("");
   const [chatSent, setChatSent] = React.useState([]);
   const [chatReceived, setChatReceived] = React.useState([]);
+  const [trigger, setTrigger] = React.useState(0);
+  const messagesEndRef = React.useRef(null);
+
+  React.useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behaviour: "smooth" });
+  }, [chatReceived]);
 
   React.useEffect(() => {
     async function fetchChats() {
@@ -29,6 +38,33 @@ function Inbox() {
     }
     fetchChats();
   }, [receiverName]);
+
+  React.useEffect(() => {
+    socket.on("receive_message", (data) => {
+      setTrigger((prevCount) => prevCount + 1);
+    });
+  }, [socket]);
+
+  React.useEffect(() => {
+    async function fetchChats() {
+      await axios
+        .post("http://localhost:3000/api/fetchchat", {
+          receiverName,
+          myUserName,
+        })
+        .then((res) => {
+          if (res.data) {
+            if (res.data.chatSent !== undefined) {
+              setChatSent(res.data.chatSent);
+            }
+            if (res.data.chatReceive !== undefined) {
+              setChatReceived(res.data.chatReceive);
+            }
+          }
+        });
+    }
+    fetchChats();
+  }, [trigger]);
 
   const combinedChat = [...chatSent, ...chatReceived];
   combinedChat.sort((a, b) => a.timeStamp - b.timeStamp);
@@ -55,19 +91,25 @@ function Inbox() {
         receiverName,
         message,
       });
+      socket.emit("send_message", message);
+      setMessage("");
     }
   };
 
   return (
     <>
       <div className="inbox-root-container">
+        {receiverName && <h1>{receiverName}</h1>}
         <div className="inbox-displaychat-container">
           {receiverName === null && (
             <div className="root-container-clickuser">Click user to chat</div>
           )}
           {receiverName !== null && (
             <>
-              <div className="inbox-rows">{renderArray}</div>
+              <div className="inbox-rows">
+                {renderArray}
+                <div ref={messagesEndRef}></div>
+              </div>
             </>
           )}
         </div>
