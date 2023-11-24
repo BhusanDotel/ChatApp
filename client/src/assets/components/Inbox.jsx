@@ -18,6 +18,8 @@ function Inbox() {
     messagesEndRef.current?.scrollIntoView({ behaviour: "smooth" });
   }, [chatReceived]);
 
+  socket.emit("username", myUserName);
+
   React.useEffect(() => {
     async function fetchChats() {
       await axios
@@ -84,6 +86,11 @@ function Inbox() {
     setMessage(e.target.value);
   };
 
+  const handleKeyPressed = (e) => {
+    if (e.key === "Enter") {
+      handleClick();
+    }
+  };
   const handleClick = async () => {
     if (message !== "") {
       await axios.post("http://localhost:3000/api/pushchat", {
@@ -120,6 +127,7 @@ function Inbox() {
             placeholder="Message"
             onChange={handleChange}
             name="message"
+            onKeyDown={handleKeyPressed}
             value={message}
           />
           <div onClick={handleClick} className="inbox-send-message">

@@ -2,10 +2,14 @@ import React from "react";
 import axios from "axios";
 import { StateContext } from "../context/StateContext";
 import "../style/Users.css";
+import io from "socket.io-client";
+
+const socket = io.connect("http://localhost:3000");
 
 function Users() {
   const { setReceiverName, myUserName } = React.useContext(StateContext);
   const [users, setUsers] = React.useState([]);
+  const [activeUsers, setActiveUsers] = React.useState([]);
 
   React.useEffect(() => {
     async function getUsers() {
@@ -26,6 +30,16 @@ function Users() {
     getUsers();
   }, []);
 
+  React.useEffect(() => {
+    socket.on("activeUsers", (activeUser) => {
+      const _activeUser = [];
+      activeUser.forEach((item) => {
+        _activeUser.push(item.username);
+      });
+      setActiveUsers(_activeUser);
+    });
+  }, [socket]);
+
   const renderArray = users.map((username, index) => {
     return (
       <div
@@ -36,6 +50,9 @@ function Users() {
         className="root-container-users"
       >
         {username}
+        {activeUsers.includes(username) && (
+          <div className="user-active-status"></div>
+        )}
       </div>
     );
   });
