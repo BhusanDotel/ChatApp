@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { StateContext } from "../context/StateContext";
 import "../style/Users.css";
 import io from "socket.io-client";
@@ -10,6 +11,7 @@ function Users() {
   const { setReceiverName, myUserName } = React.useContext(StateContext);
   const [users, setUsers] = React.useState([]);
   const [activeUsers, setActiveUsers] = React.useState([]);
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     async function getUsers() {
@@ -40,6 +42,11 @@ function Users() {
     });
   }, [socket]);
 
+  const handleLogout = () => {
+    localStorage.clear();
+    location.reload();
+  };
+
   const renderArray = users.map((username, index) => {
     return (
       <div
@@ -60,7 +67,22 @@ function Users() {
     localStorage.setItem("receiver", username);
     setReceiverName(localStorage.getItem("receiver"));
   };
-  return <div className="user-root-container">{renderArray}</div>;
+  const navigateProfile = () => {
+    navigate(`/${myUserName}`);
+  };
+  return (
+    <div className="user-profile-root-container">
+      <div className="user-root-container">{renderArray}</div>
+      <div className="profile-container">
+        <p onClick={navigateProfile} className="profile-text">
+          Profile
+        </p>
+        <p onClick={handleLogout} className="logout-text">
+          Logout
+        </p>
+      </div>
+    </div>
+  );
 }
 
 export default Users;

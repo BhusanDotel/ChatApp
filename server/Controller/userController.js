@@ -14,6 +14,23 @@ const fetchUser = async (req, res) => {
   }
 };
 
+const getUserData = async (req, res) => {
+  const { userName } = req.body;
+  try {
+    if (userName) {
+      const userDetail = await User.find({ username: userName });
+      if (userDetail) {
+        res.json(userDetail[0]);
+      } else {
+        res.json("Not Found");
+      }
+    }
+  } catch (error) {
+    res.json(error);
+  }
+};
+
 module.exports = {
   fetchUser,
+  getUserData,
 };

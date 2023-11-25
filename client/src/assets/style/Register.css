@@ -36,3 +36,19 @@
 .chat-container-button:active {
   transform: scale(0.9);
 }
+.dp-image-viewer {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 100%;
+  cursor: pointer;
+  transition: 1s;
+}
+.dp-image-viewer:active {
+  transform: rotateY(450deg);
+}
+.loading-icon {
+  width: 20px;
+  height: 20px;
+}

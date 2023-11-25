@@ -9,26 +9,47 @@ function Register() {
     email: "",
     password: "",
   });
+  const [imageSrc, setImageSrc] = React.useState("");
+  const [dpImage, setDpImage] = React.useState("");
+  const [isLoading, setLoading] = React.useState(false);
+  const fileInputRef = React.useRef(null);
   const navigate = useNavigate();
+
+  const handleDpClick = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleImage = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const imageURL = URL.createObjectURL(file);
+      setImageSrc(imageURL);
+    }
+    setDpImage(e.target.files[0]);
+  };
 
   const handleChange = (e) => {
     const _userDetail = { ...userDetail };
     _userDetail[e.target.name] = e.target.value;
     setUserDetail(_userDetail);
   };
+
   const handleClick = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const { username, email, password } = userDetail;
-    if (username !== "" && email !== "" && password !== "") {
+    if (username && email && password) {
+      const formData = new FormData();
+      formData.append("image", dpImage);
+      formData.append("username", username);
+      formData.append("email", email);
+      formData.append("password", password);
       try {
         await axios
-          .post("http://localhost:3000/api/register", {
-            username,
-            email,
-            password,
-          })
+          .post("http://localhost:3000/api/register", formData)
           .then((res) => {
             if (res.data) {
+              setLoading(false);
               alert(res.data);
               if (res.data === "Registered Successfully!") {
                 navigate("/");
@@ -43,11 +64,20 @@ function Register() {
     }
   };
 
+  const defaultImage =
+    "https://t4.ftcdn.net/jpg/00/64/67/63/240_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg";
+
   return (
     <>
       <main className="chat-container-root">
         <form className="register-input-fields">
           <h1>Register</h1>
+          <img
+            onClick={handleDpClick}
+            className="dp-image-viewer"
+            src={imageSrc === "" ? defaultImage : imageSrc}
+            alt="dp"
+          />
           <input
             type="text"
             className="chat-container-username"
@@ -55,6 +85,13 @@ function Register() {
             value={userDetail.username}
             onChange={handleChange}
             placeholder="Username"
+          />
+          <input
+            ref={fileInputRef}
+            style={{ display: "none" }}
+            type="file"
+            className="chat-container-image"
+            onChange={handleImage}
           />
           <input
             type="text"
@@ -73,7 +110,17 @@ function Register() {
             placeholder="Password"
           />
           <button className="chat-container-button" onClick={handleClick}>
-            Register
+            <>
+              {isLoading ? (
+                <img
+                  className="loading-icon"
+                  src="/image/loading-gif.gif"
+                  alt="loading...."
+                />
+              ) : (
+                "Register"
+              )}
+            </>
           </button>
         </form>
       </main>
