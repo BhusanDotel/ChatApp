@@ -11,25 +11,38 @@ function Users() {
   const { setReceiverName, myUserName } = React.useContext(StateContext);
   const [users, setUsers] = React.useState([]);
   const [activeUsers, setActiveUsers] = React.useState([]);
+  const [myDp, setMyDp] = React.useState("");
   const navigate = useNavigate();
 
   React.useEffect(() => {
     async function getUsers() {
       try {
-        const response = await axios.get("http://localhost:3000/api/fetchuser");
+        const response = await axios.post(
+          "http://localhost:3000/api/fetchusers",
+          { myUserName }
+        );
         if (response.data) {
-          const userArray = [...response.data];
-          if (userArray.includes(myUserName)) {
-            const myUserNameIndex = userArray.indexOf(myUserName);
-            userArray.splice(myUserNameIndex, 1);
-            setUsers(userArray);
-          }
+          setUsers(response.data);
         }
       } catch (error) {
         console.log(error);
       }
     }
     getUsers();
+  }, []);
+
+  React.useEffect(() => {
+    const userName = myUserName;
+    async function getData() {
+      await axios
+        .post("http://localhost:3000/api/getuserdata", { userName })
+        .then((res) => {
+          if (res.data) {
+            setMyDp(res.data.dp);
+          }
+        });
+    }
+    getData();
   }, []);
 
   React.useEffect(() => {
@@ -47,22 +60,26 @@ function Users() {
     location.reload();
   };
 
-  const renderArray = users.map((username, index) => {
+  const userRenderArray = users.map((user, index) => {
     return (
       <div
+        className="user-container"
         key={index}
         onClick={() => {
-          handleClick(username);
+          handleClick(user.username);
         }}
-        className="root-container-users"
       >
-        {username}
-        {activeUsers.includes(username) && (
+        <div className="image-username-container">
+          <img className="user-dp" src={user.dp} alt="" />
+          <div className="user-username"> {user.username}</div>
+        </div>
+        {activeUsers.includes(user.username) && (
           <div className="user-active-status"></div>
         )}
       </div>
     );
   });
+
   const handleClick = (username) => {
     localStorage.setItem("receiver", username);
     setReceiverName(localStorage.getItem("receiver"));
@@ -72,11 +89,17 @@ function Users() {
   };
   return (
     <div className="user-profile-root-container">
-      <div className="user-root-container">{renderArray}</div>
+      <div className="user-root-container">{userRenderArray}</div>
       <div className="profile-container">
-        <p onClick={navigateProfile} className="profile-text">
+        {/* <p onClick={navigateProfile} className="profile-text">
           Profile
-        </p>
+        </p> */}
+        <img
+          onClick={navigateProfile}
+          className="my-profile-dp"
+          src={myDp}
+          alt=""
+        />
         <p onClick={handleLogout} className="logout-text">
           Logout
         </p>

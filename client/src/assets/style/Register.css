@@ -1,44 +1,20 @@
-.register-input-fields {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 500px;
-  row-gap: 10px;
-}
-.chat-container-root {
-  padding: 20px;
+.reg-main {
   display: flex;
   justify-content: center;
-  width: 100%;
-  margin-top: 100px;
+  align-items: center;
 }
-.chat-container-username,
-.chat-container-email,
-.chat-container-password {
-  height: 30px;
-  outline: none;
-  border: 1px solid black;
-  border-radius: 10px;
-  padding-left: 10px;
+.reg-container {
+  max-width: 700px;
   width: 100%;
-}
-
-.chat-container-button {
-  height: 30px;
-  border-radius: 10px;
-  width: 100%;
-  color: white;
-  background-color: green;
-  border: none;
-  outline: none;
-  cursor: pointer;
-}
-.chat-container-button:active {
-  transform: scale(0.9);
+  background-color: #fff;
+  padding: 25px 30px;
+  border-radius: 5px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
 }
 .dp-image-viewer {
   width: 100px;
   height: 100px;
+  margin-top: 20px;
   object-fit: cover;
   object-position: center;
   border-radius: 100%;
@@ -51,4 +27,103 @@
 .loading-icon {
   width: 20px;
   height: 20px;
+}
+.reg-container .title {
+  font-size: 25px;
+  font-weight: 500;
+  position: relative;
+}
+.reg-container .title::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 30px;
+  border-radius: 5px;
+  background: linear-gradient(135deg, #71b7e6, #9b59b6);
+}
+.content form .user-details {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 20px 0 12px 0;
+}
+form .user-details .input-box {
+  margin-bottom: 15px;
+  width: calc(100% / 2 - 20px);
+}
+form .input-box span.details {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+.user-details .input-box input {
+  height: 45px;
+  width: 100%;
+  outline: none;
+  font-size: 16px;
+  border-radius: 5px;
+  padding-left: 15px;
+  border: 1px solid #ccc;
+  border-bottom-width: 2px;
+  transition: all 0.3s ease;
+}
+.user-details .input-box input:focus,
+.user-details .input-box input:valid {
+  border-color: #9b59b6;
+}
+.gender-info {
+  width: 180px;
+  display: flex;
+  justify-content: space-between;
+  margin-left: 5px;
+}
+.female-label,
+.male-label {
+  font-weight: 500;
+  display: flex;
+  column-gap: 5px;
+}
+form .button-div {
+  height: 45px;
+  margin: 35px 0;
+}
+form .reg-button {
+  height: 100%;
+  width: 100%;
+  border-radius: 5px;
+  border: none;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: linear-gradient(135deg, #71b7e6, #9b59b6);
+}
+form .button input:hover {
+  /* transform: scale(0.99); */
+  background: linear-gradient(-135deg, #71b7e6, #9b59b6);
+}
+@media (max-width: 584px) {
+  .reg-container {
+    max-width: 100%;
+  }
+  form .user-details .input-box {
+    margin-bottom: 15px;
+    width: 100%;
+  }
+  .content form .user-details {
+    max-height: 300px;
+    overflow-y: scroll;
+  }
+  .user-details::-webkit-scrollbar {
+    width: 5px;
+  }
+}
+@media (max-width: 459px) {
+  .reg-container .content {
+    flex-direction: column;
+  }
 }

@@ -1,19 +1,33 @@
 import React from "react";
 import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import "../style/Register.css";
 
 function Register() {
   const [userDetail, setUserDetail] = React.useState({
+    fullname: "",
     username: "",
     email: "",
+    phone: "",
     password: "",
+    cpassword: "",
+    gender: "",
   });
+  const [gender, setGender] = React.useState("");
   const [imageSrc, setImageSrc] = React.useState("");
   const [dpImage, setDpImage] = React.useState("");
   const [isLoading, setLoading] = React.useState(false);
   const fileInputRef = React.useRef(null);
   const navigate = useNavigate();
+  const toastOptions = {
+    position: "top-right",
+    autoClose: 2000,
+    pauseOnHover: true,
+    draggable: true,
+    theme: "light",
+  };
 
   const handleDpClick = () => {
     fileInputRef.current.click();
@@ -37,27 +51,40 @@ function Register() {
   const handleClick = async (e) => {
     e.preventDefault();
     setLoading(true);
-    const { username, email, password } = userDetail;
-    if (username && email && password) {
-      const formData = new FormData();
-      formData.append("image", dpImage);
-      formData.append("username", username);
-      formData.append("email", email);
-      formData.append("password", password);
-      try {
-        await axios
-          .post("http://localhost:3000/api/register", formData)
-          .then((res) => {
-            if (res.data) {
-              setLoading(false);
-              alert(res.data);
-              if (res.data === "Registered Successfully!") {
-                navigate("/");
+    const { fullname, username, email, phone, password, cpassword, gender } =
+      userDetail;
+    if (fullname && username && email && phone && password) {
+      if (password === cpassword) {
+        const formData = new FormData();
+        formData.append("image", dpImage);
+        formData.append("fullname", fullname);
+        formData.append("username", username);
+        formData.append("email", email);
+        formData.append("phone", phone);
+        formData.append("password", password);
+        formData.append("cpassword", cpassword);
+        formData.append("gender", gender);
+        try {
+          await axios
+            .post("http://localhost:3000/api/register", formData)
+            .then((res) => {
+              if (res.data) {
+                if (res.data === "Registered Successfully!") {
+                  toast.success(res.data, toastOptions);
+                  setTimeout(() => {
+                    navigate("/");
+                  }, 2000);
+                } else {
+                  setLoading(false);
+                  toast.error(res.data, toastOptions);
+                }
               }
-            }
-          });
-      } catch (error) {
-        console.log(error);
+            });
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        alert("Passwords do not match");
       }
     } else {
       alert("Do not leave fields empty");
@@ -68,63 +95,130 @@ function Register() {
     "https://t4.ftcdn.net/jpg/00/64/67/63/240_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg";
 
   return (
-    <>
-      <main className="chat-container-root">
-        <form className="register-input-fields">
-          <h1>Register</h1>
-          <img
-            onClick={handleDpClick}
-            className="dp-image-viewer"
-            src={imageSrc === "" ? defaultImage : imageSrc}
-            alt="dp"
-          />
-          <input
-            type="text"
-            className="chat-container-username"
-            name="username"
-            value={userDetail.username}
-            onChange={handleChange}
-            placeholder="Username"
-          />
-          <input
-            ref={fileInputRef}
-            style={{ display: "none" }}
-            type="file"
-            className="chat-container-image"
-            onChange={handleImage}
-          />
-          <input
-            type="text"
-            className="chat-container-email"
-            name="email"
-            value={userDetail.email}
-            onChange={handleChange}
-            placeholder="Email"
-          />
-          <input
-            type="text"
-            className="chat-container-password"
-            name="password"
-            value={userDetail.password}
-            onChange={handleChange}
-            placeholder="Password"
-          />
-          <button className="chat-container-button" onClick={handleClick}>
-            <>
-              {isLoading ? (
-                <img
-                  className="loading-icon"
-                  src="/image/loading-gif.gif"
-                  alt="loading...."
+    <div className="reg-main">
+      <div className="reg-container">
+        <div className="title">Registration</div>
+        <div className="content">
+          <form>
+            <img
+              onClick={handleDpClick}
+              className="dp-image-viewer"
+              src={imageSrc ? imageSrc : defaultImage}
+              alt="dp"
+            />
+            <input
+              ref={fileInputRef}
+              style={{ display: "none" }}
+              type="file"
+              className="chat-container-image"
+              onChange={handleImage}
+            />
+            <div className="user-details">
+              <div className="input-box">
+                <span className="details">Full Name</span>
+                <input
+                  name="fullname"
+                  onChange={handleChange}
+                  type="text"
+                  placeholder="Enter your name"
+                  required
                 />
-              ) : (
-                "Register"
-              )}
-            </>
-          </button>
-        </form>
-      </main>
-    </>
+              </div>
+              <div className="input-box">
+                <span className="details">Username</span>
+                <input
+                  name="username"
+                  onChange={handleChange}
+                  type="text"
+                  placeholder="Enter your username"
+                  required
+                />
+              </div>
+              <div className="input-box">
+                <span className="details">Email</span>
+                <input
+                  name="email"
+                  onChange={handleChange}
+                  type="text"
+                  placeholder="Enter your email"
+                  required
+                />
+              </div>
+              <div className="input-box">
+                <span className="details">Phone Number</span>
+                <input
+                  name="phone"
+                  onChange={handleChange}
+                  type="text"
+                  placeholder="Enter your number"
+                  required
+                />
+              </div>
+              <div className="input-box">
+                <span className="details">Password</span>
+                <input
+                  name="password"
+                  onChange={handleChange}
+                  type="text"
+                  placeholder="Enter your password"
+                  required
+                />
+              </div>
+              <div className="input-box">
+                <span onChange={handleChange} className="details">
+                  Confirm Password
+                </span>
+                <input
+                  type="text"
+                  name="cpassword"
+                  onChange={handleChange}
+                  placeholder="Confirm your password"
+                  required
+                />
+              </div>
+            </div>
+            <div className="gender-info">
+              <label className="male-label">
+                <input
+                  className="male-radio-btn"
+                  type="radio"
+                  value="male"
+                  name="gender"
+                  onChange={handleChange}
+                />
+                Male
+              </label>
+              <label className="female-label">
+                <input
+                  className="female-radio-btn"
+                  type="radio"
+                  value="male"
+                  name="gender"
+                  onChange={handleChange}
+                />
+                Female
+              </label>
+            </div>
+            <div className="button-div">
+              <button onClick={handleClick} className="reg-button">
+                <>
+                  {isLoading ? (
+                    <img
+                      className="loading-icon"
+                      src="/image/loading-gif.gif"
+                      alt="loading...."
+                    />
+                  ) : (
+                    "Register"
+                  )}
+                </>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <ToastContainer></ToastContainer>
+    </div>
   );
 }
 

@@ -2,7 +2,7 @@ import React from "react";
 import { StateContext } from "./StateContext";
 
 export const StateProvider = (props) => {
-  const [receiverName, setReceiverName] = React.useState("empty");
+  const [receiverName, setReceiverName] = React.useState();
   const [myUserName, setMyUserName] = React.useState("empty");
   const [isLoggedIn, setLoggedIn] = React.useState(false);
 

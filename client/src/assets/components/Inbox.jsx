@@ -13,9 +13,10 @@ function Inbox() {
   const [chatReceived, setChatReceived] = React.useState([]);
   const [trigger, setTrigger] = React.useState(0);
   const messagesEndRef = React.useRef(null);
+  const [receiverDetail, setReceiverDetail] = React.useState({});
 
   React.useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behaviour: "smooth" });
+    messagesEndRef.current?.scrollIntoView();
   }, [chatReceived]);
 
   socket.emit("username", myUserName);
@@ -38,7 +39,19 @@ function Inbox() {
           }
         });
     }
-    fetchChats();
+    async function getData() {
+      await axios
+        .post("http://localhost:3000/api/getreceiverdata", { receiverName })
+        .then((res) => {
+          if (res.data) {
+            setReceiverDetail(res.data);
+          }
+        });
+    }
+    if (receiverName) {
+      fetchChats();
+      getData();
+    }
   }, [receiverName]);
 
   React.useEffect(() => {
@@ -72,13 +85,13 @@ function Inbox() {
   combinedChat.sort((a, b) => a.timeStamp - b.timeStamp);
   const renderArray = combinedChat.map((chat, index) => {
     const className = chatSent.includes(chat)
-      ? "root-right-recieve-inbox"
-      : "root-left-send-inbox";
+      ? "root-right-send-inbox"
+      : "root-left-recieve-inbox";
 
     return (
-      <div key={index} className={className}>
+      <p key={index} className={className}>
         {chat.message}
-      </div>
+      </p>
     );
   });
 
@@ -106,7 +119,12 @@ function Inbox() {
   return (
     <>
       <div className="inbox-root-container">
-        {receiverName && <h1>{receiverName}</h1>}
+        {Object.keys(receiverDetail).length !== 0 && (
+          <div className="dp-name-container">
+            <img className="receiver-dp" src={receiverDetail.dp} alt="" />
+            <h2>{receiverDetail.fullname}</h2>
+          </div>
+        )}
         <div className="inbox-displaychat-container">
           {receiverName === null && (
             <div className="root-container-clickuser">Click user to chat</div>

@@ -6,6 +6,7 @@ const http = require("http");
 const { Server } = require("socket.io");
 const userRoute = require("./routes/userRoute");
 const chatRoute = require("./routes/chatRoute");
+const { connected } = require("process");
 const app = express();
 
 app.use(cors());
