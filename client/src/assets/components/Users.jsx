@@ -32,10 +32,9 @@ function Users() {
   }, []);
 
   React.useEffect(() => {
-    const userName = myUserName;
     async function getData() {
       await axios
-        .post("http://localhost:3000/api/getuserdata", { userName })
+        .post("http://localhost:3000/api/getuserdata", { myUserName })
         .then((res) => {
           if (res.data) {
             setMyDp(res.data.dp);

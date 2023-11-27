@@ -11,5 +11,7 @@ router.post(
 router.post("/login", authController.login);
 router.post("/fetchusers", userController.fetchUsers);
 router.post("/getuserdata", userController.getUserData);
+router.post("/setuserdata", userController.setUserData);
+router.post("/deleteaccount", userController.deleteAccount);
 router.post("/getreceiverdata", userController.getReceiverData);
 module.exports = router;

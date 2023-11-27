@@ -14,7 +14,10 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route index element={isLoggedIn ? <Chat /> : <Login />} />
-        <Route path="/:userName" element={<Profile />} />
+        <Route
+          path="/:userName"
+          element={isLoggedIn ? <Profile /> : <Login />}
+        />
       </Routes>
     </>
   );

@@ -1,0 +1,32 @@
+.profilepage-dp {
+  height: 150px;
+  width: 150px;
+  border-radius: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.profile-data-container {
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+}
+.profile-data-edit-button {
+  height: 20px;
+  width: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.password-container {
+  margin-top: 10px;
+  margin-bottom: 5px;
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+  row-gap: 5px;
+}
+.delete-account-text:hover {
+  text-decoration: underline;
+  cursor: pointer;
+  color: red;
+}
