@@ -1,25 +1,42 @@
 import React from "react";
 import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "../style/Login.css";
 import { useNavigate } from "react-router-dom";
 
 function Login() {
-  const [useDetail, setUserDetail] = React.useState({
+  const [userDetail, setUserDetail] = React.useState({
     username: "",
     password: "",
   });
+  const [isLoading, setIsLoading] = React.useState(false);
   const navigate = useNavigate();
+  const toastOptions = {
+    position: "top-right",
+    autoClose: 2000,
+    pauseOnHover: true,
+    draggable: true,
+    theme: "light",
+  };
 
   const handleChange = (e) => {
-    const _userDetail = { ...useDetail };
+    const _userDetail = { ...userDetail };
     _userDetail[e.target.name] = e.target.value;
     setUserDetail(_userDetail);
   };
 
+  const handleKeyPressed = (e) => {
+    if (e.key === "Enter") {
+      handleClick();
+    }
+  };
+
   const handleClick = async (e) => {
     e.preventDefault();
-    const { username, password } = useDetail;
-    if (username !== "" && password !== "") {
+    const { username, password } = userDetail;
+    if (username && password) {
+      setIsLoading(true);
       await axios
         .post("http://localhost:3000/api/login", {
           username,
@@ -33,7 +50,8 @@ function Login() {
               navigate("/");
               location.reload();
             } else {
-              alert(res.data);
+              setIsLoading(false);
+              toast.error(res.data, toastOptions);
             }
           }
         });
@@ -42,29 +60,57 @@ function Login() {
     }
   };
   return (
-    <main className="login-root">
+    <main className="login-main">
       <div className="login-container">
-        <h1>Login</h1>
-        <input
-          name="username"
-          value={useDetail.username}
-          onChange={handleChange}
-          className="login-username-field"
-          type="text"
-          placeholder="Username"
-        />
-        <input
-          name="password"
-          value={useDetail.password}
-          onChange={handleChange}
-          className="login-password-field"
-          type="text"
-          placeholder="Password"
-        />
-        <button onClick={handleClick} className="login-button">
-          Login
-        </button>
+        <div className="title">ChatApp Login</div>
+        <div className="login-content">
+          <form>
+            <div className="login-user-details">
+              <div className="login-input-box">
+                <span className="login-details">Username</span>
+                <input
+                  name="username"
+                  onChange={handleChange}
+                  onKeyDown={handleKeyPressed}
+                  type="text"
+                  placeholder="Enter your username"
+                  required
+                />
+              </div>
+              <div className="login-input-box">
+                <span className="login-details">Password</span>
+                <input
+                  name="password"
+                  onChange={handleChange}
+                  onKeyDown={handleKeyPressed}
+                  type="password"
+                  placeholder="Enter your password"
+                  required
+                />
+              </div>
+            </div>
+            <div className="button-div">
+              <button onClick={handleClick} className="login-button">
+                <>
+                  {isLoading ? (
+                    <img
+                      className="loading-icon"
+                      src="/image/loading-gif.gif"
+                      alt="loading...."
+                    />
+                  ) : (
+                    "Login"
+                  )}
+                </>
+              </button>
+            </div>
+          </form>
+        </div>
+        <p>
+          New user? <a href="/register">Register</a> here!
+        </p>
       </div>
+      <ToastContainer></ToastContainer>
     </main>
   );
 }

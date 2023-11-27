@@ -48,12 +48,18 @@ function Register() {
     setUserDetail(_userDetail);
   };
 
+  const handleKeyPressed = (e) => {
+    if (e.key === "Enter") {
+      handleClick();
+    }
+  };
+
   const handleClick = async (e) => {
     e.preventDefault();
-    setLoading(true);
     const { fullname, username, email, phone, password, cpassword, gender } =
       userDetail;
     if (fullname && username && email && phone && password) {
+      setLoading(true);
       if (password === cpassword) {
         const formData = new FormData();
         formData.append("image", dpImage);
@@ -97,7 +103,7 @@ function Register() {
   return (
     <div className="reg-main">
       <div className="reg-container">
-        <div className="title">Registration</div>
+        <div className="title">ChatApp Register</div>
         <div className="content">
           <form>
             <img
@@ -119,6 +125,7 @@ function Register() {
                 <input
                   name="fullname"
                   onChange={handleChange}
+                  onKeyDown={handleKeyPressed}
                   type="text"
                   placeholder="Enter your name"
                   required
@@ -129,6 +136,7 @@ function Register() {
                 <input
                   name="username"
                   onChange={handleChange}
+                  onKeyDown={handleKeyPressed}
                   type="text"
                   placeholder="Enter your username"
                   required
@@ -139,6 +147,7 @@ function Register() {
                 <input
                   name="email"
                   onChange={handleChange}
+                  onKeyDown={handleKeyPressed}
                   type="text"
                   placeholder="Enter your email"
                   required
@@ -149,6 +158,7 @@ function Register() {
                 <input
                   name="phone"
                   onChange={handleChange}
+                  onKeyDown={handleKeyPressed}
                   type="text"
                   placeholder="Enter your number"
                   required
@@ -159,7 +169,8 @@ function Register() {
                 <input
                   name="password"
                   onChange={handleChange}
-                  type="text"
+                  onKeyDown={handleKeyPressed}
+                  type="password"
                   placeholder="Enter your password"
                   required
                 />
@@ -169,9 +180,10 @@ function Register() {
                   Confirm Password
                 </span>
                 <input
-                  type="text"
+                  type="password"
                   name="cpassword"
                   onChange={handleChange}
+                  onKeyDown={handleKeyPressed}
                   placeholder="Confirm your password"
                   required
                 />
@@ -216,6 +228,9 @@ function Register() {
             </div>
           </form>
         </div>
+        <p>
+          Already an user? <a href="/login">login</a> here!
+        </p>
       </div>
       <ToastContainer></ToastContainer>
     </div>

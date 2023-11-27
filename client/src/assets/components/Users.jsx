@@ -91,9 +91,6 @@ function Users() {
     <div className="user-profile-root-container">
       <div className="user-root-container">{userRenderArray}</div>
       <div className="profile-container">
-        {/* <p onClick={navigateProfile} className="profile-text">
-          Profile
-        </p> */}
         <img
           onClick={navigateProfile}
           className="my-profile-dp"
