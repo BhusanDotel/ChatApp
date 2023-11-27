@@ -58,6 +58,12 @@ function Inbox() {
     socket.on("receive_message", (data) => {
       setTrigger((prevCount) => prevCount + 1);
     });
+
+    socket.on("receive_beep", (beep) => {
+      if (beep) {
+        new Audio("/sound/msg-receive.mp3").play();
+      }
+    });
   }, [socket]);
 
   React.useEffect(() => {
@@ -112,6 +118,8 @@ function Inbox() {
         message,
       });
       socket.emit("send_message", message);
+      socket.emit("for_beep", message);
+      new Audio("/sound/msg-sent.mp3").play();
       setMessage("");
     }
   };

@@ -56,6 +56,10 @@ io.on("connection", (socket) => {
     io.emit("receive_message", data);
   });
 
+  socket.on("for_beep", (beep) => {
+    socket.broadcast.emit("receive_beep", beep);
+  });
+
   socket.on("disconnect", () => {
     let disconnectedUser = "";
     activeUsers.forEach((user) => {
