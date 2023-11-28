@@ -3,6 +3,7 @@ require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const multer = require("multer");
 const cloudinary = require("../config/cloudinaryConfig");
+const fs = require("fs");
 
 const upload = multer({ dest: "uploads/" });
 const uploadMiddleware = upload.single("image");
@@ -21,6 +22,12 @@ const register = async (req, res) => {
           });
           console.log("image uploaded");
           const userDp = up_img.secure_url;
+
+          // this will delete image from localstorage
+          if (userDp) {
+            fs.unlinkSync(req.file.path);
+          }
+
           User.create({
             fullname: fullname,
             username: username,
