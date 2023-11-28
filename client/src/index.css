@@ -8,5 +8,9 @@
 body {
   height: 100vh;
   padding: 10px;
-  background: linear-gradient(135deg, #71b7e6, #9b59b6);
+  /* background: linear-gradient(135deg, #71b7e6, #9b59b6); */
+  background-image: url("/image/bg.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
 }

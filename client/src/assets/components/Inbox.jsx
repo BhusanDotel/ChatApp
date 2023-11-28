@@ -14,11 +14,17 @@ function Inbox() {
   const [trigger, setTrigger] = React.useState(0);
   const messagesEndRef = React.useRef(null);
   const [receiverDetail, setReceiverDetail] = React.useState({});
-  const [senderWhenReceived, setSenderWhenReceived] = React.useState("");
+  const [msgFromSocketBeep, setMsgFromSocketBeep] = React.useState([]);
 
   React.useEffect(() => {
     messagesEndRef.current?.scrollIntoView();
   }, [chatReceived]);
+
+  React.useEffect(() => {
+    if (msgFromSocketBeep.length > 0) {
+      new Audio("/sound/msg-receive.mp3").play();
+    }
+  }, [chatReceived.length]);
 
   socket.emit("username", myUserName);
 
@@ -57,23 +63,14 @@ function Inbox() {
 
   React.useEffect(() => {
     socket.on("receive_message", (data) => {
+      if (data) {
+        const _receive = [];
+        _receive.push(data);
+        setMsgFromSocketBeep(_receive);
+      }
       setTrigger((prevCount) => prevCount + 1);
     });
-
-    socket.on("sender_beep", (sender) => {
-      if (sender) {
-        setSenderWhenReceived(sender);
-      }
-    });
   }, [socket]);
-
-  React.useEffect(() => {
-    if (senderWhenReceived) {
-      if (senderWhenReceived === receiverName) {
-        new Audio("/sound/msg-receive.mp3").play();
-      }
-    }
-  }, [senderWhenReceived, trigger]);
 
   React.useEffect(() => {
     async function fetchChats() {
@@ -127,7 +124,6 @@ function Inbox() {
         message,
       });
       socket.emit("send_message", message);
-      socket.emit("sender_for_beep", myUserName);
       new Audio("/sound/msg-sent.mp3").play();
       setMessage("");
     }

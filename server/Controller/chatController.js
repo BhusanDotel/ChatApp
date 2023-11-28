@@ -99,12 +99,9 @@ const fetchLastMessages = async (req, res) => {
                     (max, msg) => (msg.timeStamp > max.timeStamp ? msg : max),
                     messages[0]
                   );
-                  // console.log(messageWithMaxTimeStamp);
-                  // console.log(item.username);
                   const lastmessage = {
                     [item.username]: messageWithMaxTimeStamp.message,
                   };
-
                   const lastmessageString = JSON.stringify(lastmessage);
 
                   if (!lastMessages.includes(lastmessageString)) {

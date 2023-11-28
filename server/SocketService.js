@@ -31,10 +31,6 @@ const initSocket = (httpServer) => {
       io.emit("receive_message", data);
     });
 
-    socket.on("sender_for_beep", (sender) => {
-      socket.broadcast.emit("sender_beep", sender);
-    });
-
     socket.on("disconnect", () => {
       let disconnectedUser = "";
       activeUsers.forEach((user) => {
