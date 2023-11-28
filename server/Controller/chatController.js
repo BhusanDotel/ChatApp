@@ -1,3 +1,4 @@
+const { json } = require("body-parser");
 const User = require("../Model/userModel");
 
 let lastTimeStamp = 0;
@@ -77,7 +78,53 @@ const pushChat = async (req, res) => {
   }
 };
 
+const fetchLastMessages = async (req, res) => {
+  const lastMessages = [];
+  const { myUserName } = req.body;
+  try {
+    if (myUserName) {
+      // this will print all data expcept that has username myUserName
+      const allChats = await User.find({
+        username: { $ne: myUserName },
+      });
+      if (allChats) {
+        allChats.forEach((item) => {
+          const chats = item.chats;
+          if (chats.length > 0) {
+            chats.forEach((obj) => {
+              if (obj[myUserName]) {
+                const messages = obj[myUserName];
+                messages.forEach((msg) => {
+                  const messageWithMaxTimeStamp = messages.reduce(
+                    (max, msg) => (msg.timeStamp > max.timeStamp ? msg : max),
+                    messages[0]
+                  );
+                  // console.log(messageWithMaxTimeStamp);
+                  // console.log(item.username);
+                  const lastmessage = {
+                    [item.username]: messageWithMaxTimeStamp.message,
+                  };
+
+                  const lastmessageString = JSON.stringify(lastmessage);
+
+                  if (!lastMessages.includes(lastmessageString)) {
+                    lastMessages.push(lastmessageString);
+                  }
+                });
+              }
+            });
+          }
+        });
+      }
+      res.json(lastMessages);
+    }
+  } catch (error) {
+    res.json("something went wrong");
+  }
+};
+
 module.exports = {
   fetchChat,
   pushChat,
+  fetchLastMessages,
 };

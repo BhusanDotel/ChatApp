@@ -8,11 +8,39 @@ import io from "socket.io-client";
 const socket = io.connect("http://localhost:3000");
 
 function Users() {
-  const { setReceiverName, myUserName } = React.useContext(StateContext);
+  const { setReceiverName, myUserName, receiverName } =
+    React.useContext(StateContext);
   const [users, setUsers] = React.useState([]);
   const [activeUsers, setActiveUsers] = React.useState([]);
   const [myDp, setMyDp] = React.useState("");
+  const [lastReceiveMessages, setLastReceiveMessages] = React.useState("");
+  const [trigger, setTrigger] = React.useState(0);
   const navigate = useNavigate();
+
+  React.useEffect(() => {
+    socket.on("receive_message", (data) => {
+      setTrigger((prevCount) => prevCount + 1);
+    });
+  }, [socket]);
+
+  React.useEffect(() => {
+    async function fetchChats() {
+      await axios
+        .post("http://localhost:3000/api/fetchlastmessage", {
+          myUserName,
+        })
+        .then((res) => {
+          if (res.data !== "something went wrong") {
+            const _data = res.data;
+            const parsedArray = _data.map((jsonString) =>
+              JSON.parse(jsonString)
+            );
+            setLastReceiveMessages(parsedArray);
+          }
+        });
+    }
+    fetchChats();
+  }, [trigger]);
 
   React.useEffect(() => {
     async function getUsers() {
@@ -68,13 +96,26 @@ function Users() {
           handleClick(user.username);
         }}
       >
-        <div className="image-username-container">
-          <img className="user-dp" src={user.dp} alt="" />
-          <div className="user-username"> {user.username}</div>
+        <div className="user-info-container">
+          <div className="image-username-container">
+            <img className="user-dp" src={user.dp} alt="" />
+            <div className="user-username"> {user.username}</div>
+          </div>
+          {activeUsers.includes(user.username) && (
+            <div className="user-active-status"></div>
+          )}
         </div>
-        {activeUsers.includes(user.username) && (
-          <div className="user-active-status"></div>
-        )}
+        <div className="last-message-div">
+          {lastReceiveMessages.map((lastMsgObj, index) => {
+            if (lastMsgObj[user.username]) {
+              return (
+                <p className="lastmessage-text" key={index}>
+                  {lastMsgObj[user.username]}
+                </p>
+              );
+            }
+          })}
+        </div>
       </div>
     );
   });
