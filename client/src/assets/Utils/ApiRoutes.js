@@ -1,0 +1,11 @@
+export const host = "http://localhost:3000";
+export const loginApi = `${host}/api/login`;
+export const registerApi = `${host}/api/register`;
+export const fetchChatApi = `${host}/api/fetchchat`;
+export const getReceiverDataApi = `${host}/api/getreceiverdata`;
+export const pushChatApi = `${host}/api/pushchat`;
+export const fetchLastMessageApi = `${host}/api/fetchlastmessage`;
+export const fetchUsersApi = `${host}/api/fetchusers`;
+export const getUserDataApi = `${host}/api/getuserdata`;
+export const setUserDataApi = `${host}/api/setUserdata`;
+export const deleteAccountApi = `${host}/api/deleteaccount`;

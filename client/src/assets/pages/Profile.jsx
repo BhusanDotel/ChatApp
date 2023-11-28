@@ -2,6 +2,9 @@ import React from "react";
 import { StateContext } from "../context/StateContext";
 import axios from "axios";
 import "../style/Profile.css";
+import { getUserDataApi } from "../Utils/ApiRoutes";
+import { setUserDataApi } from "../Utils/ApiRoutes";
+import { deleteAccountApi } from "../Utils/ApiRoutes";
 
 function Profile() {
   const { myUserName } = React.useContext(StateContext);
@@ -106,7 +109,7 @@ function Profile() {
     const sendData = async () => {
       try {
         await axios
-          .post("http://localhost:3000/api/setUserdata", {
+          .post(setUserDataApi, {
             myUserName,
             newFullName,
             newEmail,
@@ -134,19 +137,17 @@ function Profile() {
 
   React.useEffect(() => {
     async function getData() {
-      await axios
-        .post("http://localhost:3000/api/getuserdata", { myUserName })
-        .then((res) => {
-          if (res.data) {
-            const _userDetails = { ...userDetails };
-            _userDetails.fullname = res.data.fullname;
-            _userDetails.userName = res.data.username;
-            _userDetails.email = res.data.email;
-            _userDetails.phone = res.data.phone;
-            _userDetails.dp = res.data.dp;
-            setUserDetails(_userDetails);
-          }
-        });
+      await axios.post(getUserDataApi, { myUserName }).then((res) => {
+        if (res.data) {
+          const _userDetails = { ...userDetails };
+          _userDetails.fullname = res.data.fullname;
+          _userDetails.userName = res.data.username;
+          _userDetails.email = res.data.email;
+          _userDetails.phone = res.data.phone;
+          _userDetails.dp = res.data.dp;
+          setUserDetails(_userDetails);
+        }
+      });
     }
     getData();
   }, []);
@@ -155,7 +156,7 @@ function Profile() {
     const confirmText = prompt(`Type "CONFIRM" to proceed`);
     if (confirmText) {
       axios
-        .post("http://localhost:3000/api/deleteaccount", {
+        .post(deleteAccountApi, {
           myUserName,
           confirmText,
         })

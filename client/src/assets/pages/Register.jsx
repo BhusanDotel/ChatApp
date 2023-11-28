@@ -4,6 +4,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import "../style/Register.css";
+import { registerApi } from "../Utils/ApiRoutes";
 
 function Register() {
   const [userDetail, setUserDetail] = React.useState({
@@ -71,21 +72,19 @@ function Register() {
         formData.append("cpassword", cpassword);
         formData.append("gender", gender);
         try {
-          await axios
-            .post("http://localhost:3000/api/register", formData)
-            .then((res) => {
-              if (res.data) {
-                if (res.data === "Registered Successfully!") {
-                  toast.success(res.data, toastOptions);
-                  setTimeout(() => {
-                    navigate("/");
-                  }, 2000);
-                } else {
-                  setLoading(false);
-                  toast.error(res.data, toastOptions);
-                }
+          await axios.post(registerApi, formData).then((res) => {
+            if (res.data) {
+              if (res.data === "Registered Successfully!") {
+                toast.success(res.data, toastOptions);
+                setTimeout(() => {
+                  navigate("/");
+                }, 2000);
+              } else {
+                setLoading(false);
+                toast.error(res.data, toastOptions);
               }
-            });
+            }
+          });
         } catch (error) {
           console.log(error);
         }

@@ -2,14 +2,17 @@ import React from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { StateContext } from "../context/StateContext";
+import { host } from "../Utils/ApiRoutes";
+import { fetchLastMessageApi } from "../Utils/ApiRoutes";
+import { fetchUsersApi } from "../Utils/ApiRoutes";
+import { getUserDataApi } from "../Utils/ApiRoutes";
 import "../style/Users.css";
 import io from "socket.io-client";
 
-const socket = io.connect("http://localhost:3000");
+const socket = io.connect(host);
 
 function Users() {
-  const { setReceiverName, myUserName, receiverName } =
-    React.useContext(StateContext);
+  const { setReceiverName, myUserName } = React.useContext(StateContext);
   const [users, setUsers] = React.useState([]);
   const [activeUsers, setActiveUsers] = React.useState([]);
   const [myDp, setMyDp] = React.useState("");
@@ -26,7 +29,7 @@ function Users() {
   React.useEffect(() => {
     async function fetchChats() {
       await axios
-        .post("http://localhost:3000/api/fetchlastmessage", {
+        .post(fetchLastMessageApi, {
           myUserName,
         })
         .then((res) => {
@@ -45,10 +48,7 @@ function Users() {
   React.useEffect(() => {
     async function getUsers() {
       try {
-        const response = await axios.post(
-          "http://localhost:3000/api/fetchusers",
-          { myUserName }
-        );
+        const response = await axios.post(fetchUsersApi, { myUserName });
         if (response.data) {
           setUsers(response.data);
         }
@@ -61,13 +61,11 @@ function Users() {
 
   React.useEffect(() => {
     async function getData() {
-      await axios
-        .post("http://localhost:3000/api/getuserdata", { myUserName })
-        .then((res) => {
-          if (res.data) {
-            setMyDp(res.data.dp);
-          }
-        });
+      await axios.post(getUserDataApi, { myUserName }).then((res) => {
+        if (res.data) {
+          setMyDp(res.data.dp);
+        }
+      });
     }
     getData();
   }, []);

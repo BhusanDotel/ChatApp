@@ -4,6 +4,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../style/Login.css";
 import { useNavigate } from "react-router-dom";
+import { loginApi } from "../Utils/ApiRoutes";
 
 function Login() {
   const [userDetail, setUserDetail] = React.useState({
@@ -38,7 +39,7 @@ function Login() {
     if (username && password) {
       setIsLoading(true);
       await axios
-        .post("http://localhost:3000/api/login", {
+        .post(loginApi, {
           username,
           password,
         })

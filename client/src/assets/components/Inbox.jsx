@@ -1,10 +1,14 @@
 import React from "react";
 import "../style/Inbox.css";
 import { StateContext } from "../context/StateContext";
+import { host } from "../Utils/ApiRoutes";
+import { fetchChatApi } from "../Utils/ApiRoutes";
+import { getReceiverDataApi } from "../Utils/ApiRoutes";
+import { pushChatApi } from "../Utils/ApiRoutes";
 import axios from "axios";
 import io from "socket.io-client";
 
-const socket = io.connect("http://localhost:3000");
+const socket = io.connect(host);
 
 function Inbox() {
   const { receiverName, myUserName } = React.useContext(StateContext);
@@ -31,7 +35,7 @@ function Inbox() {
   React.useEffect(() => {
     async function fetchChats() {
       await axios
-        .post("http://localhost:3000/api/fetchchat", {
+        .post(fetchChatApi, {
           receiverName,
           myUserName,
         })
@@ -47,13 +51,11 @@ function Inbox() {
         });
     }
     async function getData() {
-      await axios
-        .post("http://localhost:3000/api/getreceiverdata", { receiverName })
-        .then((res) => {
-          if (res.data) {
-            setReceiverDetail(res.data);
-          }
-        });
+      await axios.post(getReceiverDataApi, { receiverName }).then((res) => {
+        if (res.data) {
+          setReceiverDetail(res.data);
+        }
+      });
     }
     if (receiverName) {
       fetchChats();
@@ -75,7 +77,7 @@ function Inbox() {
   React.useEffect(() => {
     async function fetchChats() {
       await axios
-        .post("http://localhost:3000/api/fetchchat", {
+        .post(fetchChatApi, {
           receiverName,
           myUserName,
         })
@@ -118,7 +120,7 @@ function Inbox() {
   };
   const handleClick = async () => {
     if (message !== "") {
-      await axios.post("http://localhost:3000/api/pushchat", {
+      await axios.post(pushChatApi, {
         myUserName,
         receiverName,
         message,
