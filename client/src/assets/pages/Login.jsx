@@ -35,6 +35,7 @@ function Login() {
   };
 
   const handleClick = async (event) => {
+    event.preventDefault();
     const { username, password } = userDetail;
     if (username && password) {
       setIsLoading(true);
