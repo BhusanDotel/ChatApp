@@ -2,8 +2,16 @@ const User = require("../Model/userModel");
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const multer = require("multer");
-const cloudinary = require("../config/cloudinaryConfig");
+const cloudinary = require("cloudinary").v2;
 const fs = require("fs");
+
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET,
+});
+
+module.exports = cloudinary;
 
 const upload = multer({ dest: "uploads/" });
 const uploadMiddleware = upload.single("image");
