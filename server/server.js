@@ -6,6 +6,8 @@ const http = require("http");
 const userRoute = require("./routes/userRoute");
 const chatRoute = require("./routes/chatRoute");
 const initSocket = require("./SocketService");
+require("dotenv").config();
+const PORT = process.env.PORT || 3000;
 
 const app = express();
 
@@ -13,10 +15,12 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+//mongodb://localhost:27017/ChatApp
+const mongoCloud_url = process.env.MONGO_CLOUD_URL;
 mongoose
-  .connect("mongodb://localhost:27017/ChatApp")
+  .connect(mongoCloud_url)
   .then(() => {
-    console.log("Mongodb connected: localhost:27017");
+    console.log("Mongodb connected to cloud..");
   })
   .catch((e) => {
     console.log("Error", e);
@@ -29,6 +33,6 @@ const server = http.createServer(app);
 
 initSocket(server);
 
-server.listen(3000, () => {
+server.listen(PORT, () => {
   console.log("App listening on port 3000!");
 });

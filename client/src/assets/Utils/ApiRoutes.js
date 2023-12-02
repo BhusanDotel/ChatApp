@@ -2,6 +2,7 @@ export const host = "http://localhost:3000";
 export const loginApi = `${host}/api/login`;
 export const registerApi = `${host}/api/register`;
 export const fetchChatApi = `${host}/api/fetchchat`;
+export const fetchDpApi = `${host}/api/fetchdp`;
 export const getReceiverDataApi = `${host}/api/getreceiverdata`;
 export const pushChatApi = `${host}/api/pushchat`;
 export const fetchLastMessageApi = `${host}/api/fetchlastmessage`;

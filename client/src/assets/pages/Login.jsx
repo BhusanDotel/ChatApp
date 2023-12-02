@@ -29,12 +29,12 @@ function Login() {
 
   const handleKeyPressed = (e) => {
     if (e.key === "Enter") {
+      e.preventDefault();
       handleClick();
     }
   };
 
-  const handleClick = async (e) => {
-    e.preventDefault();
+  const handleClick = async (event) => {
     const { username, password } = userDetail;
     if (username && password) {
       setIsLoading(true);

@@ -120,8 +120,30 @@ const fetchLastMessages = async (req, res) => {
   }
 };
 
+const fetchDp = async (req, res) => {
+  if (req.body) {
+    const { myUserName, receiverName } = req.body;
+    if (myUserName && receiverName) {
+      const dp = {
+        senderDp: "",
+        receiverDp: "",
+      };
+      const sender = await User.findOne({ username: myUserName });
+      if (sender) {
+        dp.senderDp = sender.dp;
+      }
+      const receiver = await User.findOne({ username: receiverName });
+      if (receiver) {
+        dp.receiverDp = receiver.dp;
+      }
+      res.json(dp);
+    }
+  }
+};
+
 module.exports = {
   fetchChat,
   pushChat,
   fetchLastMessages,
+  fetchDp,
 };

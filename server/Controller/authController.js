@@ -17,10 +17,10 @@ const register = async (req, res) => {
     if (req.file) {
       if (fullname && username && email && phone && password && gender) {
         try {
+          const _public_id = fullname + password;
           const up_img = await cloudinary.uploader.upload(req.file.path, {
-            public_id: username,
+            public_id: _public_id,
           });
-          console.log("image uploaded");
           const userDp = up_img.secure_url;
 
           // this will delete image from localstorage

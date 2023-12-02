@@ -5,6 +5,7 @@ import { host } from "../Utils/ApiRoutes";
 import { fetchChatApi } from "../Utils/ApiRoutes";
 import { getReceiverDataApi } from "../Utils/ApiRoutes";
 import { pushChatApi } from "../Utils/ApiRoutes";
+import { fetchDpApi } from "../Utils/ApiRoutes";
 import axios from "axios";
 import io from "socket.io-client";
 
@@ -19,6 +20,10 @@ function Inbox() {
   const messagesEndRef = React.useRef(null);
   const [receiverDetail, setReceiverDetail] = React.useState({});
   const [msgFromSocketBeep, setMsgFromSocketBeep] = React.useState([]);
+  const [useDp, setUserDp] = React.useState({
+    senderDp: "",
+    receiverDp: "",
+  });
 
   React.useEffect(() => {
     messagesEndRef.current?.scrollIntoView();
@@ -57,9 +62,20 @@ function Inbox() {
         }
       });
     }
+    async function fetchDp() {
+      await axios.post(fetchDpApi, { myUserName, receiverName }).then((res) => {
+        if (res.data) {
+          const _userDp = { ...useDp };
+          _userDp.senderDp = res.data.senderDp;
+          _userDp.receiverDp = res.data.receiverDp;
+          setUserDp(_userDp);
+        }
+      });
+    }
     if (receiverName) {
       fetchChats();
       getData();
+      fetchDp();
     }
   }, [receiverName]);
 
@@ -98,14 +114,21 @@ function Inbox() {
   const combinedChat = [...chatSent, ...chatReceived];
   combinedChat.sort((a, b) => a.timeStamp - b.timeStamp);
   const renderArray = combinedChat.map((chat, index) => {
-    const className = chatSent.includes(chat)
+    const classNameDiv = chatSent.includes(chat)
       ? "root-right-send-inbox"
       : "root-left-recieve-inbox";
+    const classNameChat = chatSent.includes(chat)
+      ? "chat-right-send-inbox"
+      : "chat-left-recieve-inbox";
+    const dpFinder = chatSent.includes(chat) ? "senderDp" : "receiverDp";
 
     return (
-      <p key={index} className={className}>
-        {chat.message}
-      </p>
+      <div key={index} className={classNameDiv}>
+        <p className={classNameChat}>{chat.message}</p>
+        <div className="image-div">
+          <img className="chat-mini-dp" src={useDp[dpFinder]} alt="" />
+        </div>
+      </div>
     );
   });
 

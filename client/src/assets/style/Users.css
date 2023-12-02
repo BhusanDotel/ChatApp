@@ -35,7 +35,7 @@
   display: flex;
   align-items: center;
   padding-left: 10px;
-  transition: 1s;
+  overflow: hidden;
 }
 .lastmessage-text {
   color: rgb(97, 97, 97);
