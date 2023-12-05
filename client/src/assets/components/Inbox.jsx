@@ -24,6 +24,7 @@ function Inbox() {
     senderDp: "",
     receiverDp: "",
   });
+  const [isSending, setSending] = React.useState(false);
 
   React.useEffect(() => {
     messagesEndRef.current?.scrollIntoView();
@@ -143,6 +144,7 @@ function Inbox() {
   };
   const handleClick = async () => {
     if (message !== "") {
+      setSending(true);
       await axios.post(pushChatApi, {
         myUserName,
         receiverName,
@@ -151,6 +153,7 @@ function Inbox() {
       socket.emit("send_message", message);
       new Audio("/sound/msg-sent.mp3").play();
       setMessage("");
+      setSending(false);
     }
   };
 
@@ -180,14 +183,14 @@ function Inbox() {
           <input
             className="inbox-message-input"
             type="text"
-            placeholder="Message"
+            placeholder="Enter Message"
             onChange={handleChange}
             name="message"
             onKeyDown={handleKeyPressed}
             value={message}
           />
           <div onClick={handleClick} className="inbox-send-message">
-            send
+            {isSending ? "sending...." : "Send"}
           </div>
         </div>
       </div>

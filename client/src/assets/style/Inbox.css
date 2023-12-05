@@ -94,7 +94,7 @@
 }
 .inbox-send-message {
   border: 1px solid green;
-  width: 50px;
+  width: 100px;
   height: 40px;
   display: flex;
   justify-content: center;
