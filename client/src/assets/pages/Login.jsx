@@ -29,7 +29,6 @@ function Login() {
 
   const handleKeyPressed = (e) => {
     if (e.key === "Enter") {
-      e.preventDefault();
       handleClick();
     }
   };

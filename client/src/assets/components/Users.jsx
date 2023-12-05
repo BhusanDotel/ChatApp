@@ -102,7 +102,7 @@ function Users() {
             <img className="user-dp" src={user.dp} alt="" />
             <div className="user-username"> {user.username}</div>
           </div>
-          {!activeUsers.includes(user.username) && (
+          {activeUsers.includes(user.username) && (
             <div className="user-active-status"></div>
           )}
         </div>

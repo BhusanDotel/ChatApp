@@ -3,7 +3,7 @@
   justify-content: center;
   margin-top: 20px;
 }
-.profile-container {
+.profile-root-container {
   height: auto;
   width: 400px;
   display: flex;

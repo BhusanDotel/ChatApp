@@ -181,7 +181,7 @@ function Profile() {
 
   return (
     <main className="profile-root">
-      <div className="profile-container">
+      <div className="profile-root-container">
         <h1>{myUserName}</h1>
         <img className="profilepage-dp" src={userDetails.dp} alt="" />
 
