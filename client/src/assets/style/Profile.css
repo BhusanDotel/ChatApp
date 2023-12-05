@@ -1,3 +1,19 @@
+.profile-root {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+.profile-container {
+  height: auto;
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.184);
+  backdrop-filter: blur(20px);
+  border-radius: 10px;
+  padding: 20px;
+}
 .profilepage-dp {
   height: 150px;
   width: 150px;
@@ -28,5 +44,9 @@
 .delete-account-text:hover {
   text-decoration: underline;
   cursor: pointer;
-  color: red;
+  color: rgb(255, 0, 0);
+}
+.logout-text-profile:hover {
+  text-decoration: underline;
+  cursor: pointer;
 }

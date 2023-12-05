@@ -174,120 +174,130 @@ function Profile() {
     }
   };
 
+  const handleLogout = () => {
+    localStorage.clear();
+    location.reload();
+  };
+
   return (
-    <>
-      <h1>{myUserName}</h1>
-      <img className="profilepage-dp" src={userDetails.dp} alt="" />
+    <main className="profile-root">
+      <div className="profile-container">
+        <h1>{myUserName}</h1>
+        <img className="profilepage-dp" src={userDetails.dp} alt="" />
 
-      <div className="profile-data-container fullname-container">
-        <div>
-          Full Name: {""}
-          {!isFullNameEdit ? (
-            userDetails.fullname
+        <div className="profile-data-container fullname-container">
+          <div>
+            Full Name: {""}
+            {!isFullNameEdit ? (
+              userDetails.fullname
+            ) : (
+              <input onChange={handleFullName} type="text" />
+            )}
+          </div>
+          {isFullNameEditCancel ? (
+            <button className="profile-data-edit-button" onClick={editFullName}>
+              Edit
+            </button>
+          ) : newFullName ? (
+            <button
+              className="profile-data-edit-button"
+              onClick={saveNewFullName}
+            >
+              Save
+            </button>
           ) : (
-            <input onChange={handleFullName} type="text" />
+            <button
+              className="profile-data-edit-button"
+              onClick={cancelFullNameEdit}
+            >
+              Cancel
+            </button>
           )}
         </div>
-        {isFullNameEditCancel ? (
-          <button className="profile-data-edit-button" onClick={editFullName}>
-            Edit
-          </button>
-        ) : newFullName ? (
-          <button
-            className="profile-data-edit-button"
-            onClick={saveNewFullName}
-          >
-            Save
-          </button>
-        ) : (
-          <button
-            className="profile-data-edit-button"
-            onClick={cancelFullNameEdit}
-          >
-            Cancel
-          </button>
-        )}
-      </div>
 
-      <div className="profile-data-container email-container">
-        <div>
-          Email: {""}
-          {!isEmailEdit ? (
-            userDetails.email
+        <div className="profile-data-container email-container">
+          <div>
+            Email: {""}
+            {!isEmailEdit ? (
+              userDetails.email
+            ) : (
+              <input onChange={handleEmail} type="email" />
+            )}
+          </div>
+          {isEmailEditCancel ? (
+            <button className="profile-data-edit-button" onClick={editEmail}>
+              Edit
+            </button>
+          ) : newEmail ? (
+            <button className="profile-data-edit-button" onClick={saveEmail}>
+              Save
+            </button>
           ) : (
-            <input onChange={handleEmail} type="email" />
+            <button
+              className="profile-data-edit-button"
+              onClick={cancelEmailEdit}
+            >
+              Cancel
+            </button>
           )}
         </div>
-        {isEmailEditCancel ? (
-          <button className="profile-data-edit-button" onClick={editEmail}>
-            Edit
-          </button>
-        ) : newEmail ? (
-          <button className="profile-data-edit-button" onClick={saveEmail}>
-            Save
-          </button>
-        ) : (
-          <button
-            className="profile-data-edit-button"
-            onClick={cancelEmailEdit}
-          >
-            Cancel
-          </button>
-        )}
-      </div>
 
-      <div className="profile-data-container phone-container">
-        <div>
-          Phone: {""}
-          {!isPhoneEdit ? (
-            userDetails.phone
+        <div className="profile-data-container phone-container">
+          <div>
+            Phone: {""}
+            {!isPhoneEdit ? (
+              userDetails.phone
+            ) : (
+              <input onChange={handlePhone} type="number" />
+            )}
+          </div>
+          {isPhoneEditCancel ? (
+            <button className="profile-data-edit-button" onClick={editPhone}>
+              Edit
+            </button>
+          ) : newPhone ? (
+            <button className="profile-data-edit-button" onClick={savePhone}>
+              Save
+            </button>
           ) : (
-            <input onChange={handlePhone} type="number" />
+            <button
+              className="profile-data-edit-button"
+              onClick={cancelPhoneEdit}
+            >
+              Cancel
+            </button>
           )}
         </div>
-        {isPhoneEditCancel ? (
-          <button className="profile-data-edit-button" onClick={editPhone}>
-            Edit
-          </button>
-        ) : newPhone ? (
-          <button className="profile-data-edit-button" onClick={savePhone}>
-            Save
-          </button>
-        ) : (
-          <button
-            className="profile-data-edit-button"
-            onClick={cancelPhoneEdit}
-          >
-            Cancel
-          </button>
-        )}
-      </div>
 
-      {isPasswordEdit && (
-        <div className="password-container">
-          <input
-            type="text"
-            onChange={handleOldPassword}
-            placeholder="Recent Password"
-          />
-          <input
-            type="text"
-            onChange={handleNewPassword}
-            placeholder="New Password"
-          />
-        </div>
-      )}
-      {!isPasswordEdit ? (
-        <button onClick={changePassword}>change password</button>
-      ) : newPassword ? (
-        <button onClick={savePassword}>Save</button>
-      ) : (
-        <button onClick={cancelChangePassword}>Cancel</button>
-      )}
-      <p onClick={deleteAccount} className="delete-account-text">
-        Delete Account
-      </p>
-    </>
+        {isPasswordEdit && (
+          <div className="password-container">
+            <input
+              type="text"
+              onChange={handleOldPassword}
+              placeholder="Recent Password"
+            />
+            <input
+              type="text"
+              onChange={handleNewPassword}
+              placeholder="New Password"
+            />
+          </div>
+        )}
+        {!isPasswordEdit ? (
+          <button onClick={changePassword}>change password</button>
+        ) : newPassword ? (
+          <button onClick={savePassword}>Save</button>
+        ) : (
+          <button onClick={cancelChangePassword}>Cancel</button>
+        )}
+        <p onClick={deleteAccount} className="delete-account-text">
+          Delete Account
+        </p>
+        <p className="logout-text-profile" onClick={handleLogout}>
+          Logout
+        </p>
+      </div>
+    </main>
   );
 }
 

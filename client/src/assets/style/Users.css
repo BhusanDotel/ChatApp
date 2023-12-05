@@ -82,6 +82,98 @@
   font-size: 20px;
   cursor: pointer;
 }
+.profile-text {
+  display: none;
+}
 .logout-text:hover {
   color: blue;
+}
+
+@media screen and (max-width: 1000px) {
+  .user-profile-root-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row-reverse;
+    height: 100px;
+    overflow: hidden;
+    border-radius: 20px;
+    z-index: 1;
+  }
+  .user-root-container {
+    display: flex;
+    overflow-x: scroll;
+    flex-direction: row;
+    justify-content: start;
+    border: none;
+    width: 100%;
+    padding: 0px;
+    height: 100%;
+    column-gap: 10px;
+    align-items: center;
+  }
+  .user-container {
+    border: none;
+    width: 100px;
+  }
+  .user-info-container {
+    min-width: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .image-username-container {
+    display: flex;
+    flex-direction: column;
+  }
+  .user-dp {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 100%;
+  }
+  .last-message-div {
+    display: none;
+  }
+  .user-active-status {
+    position: absolute;
+    height: 15px;
+    width: 15px;
+    border-radius: 100%;
+    background-color: rgb(43, 206, 43);
+    top: 0;
+    right: 10px;
+  }
+  .profile-container {
+    width: 100px;
+    height: auto;
+    border: none;
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(0, 68, 97);
+  }
+  .my-profile-dp {
+    height: 40px;
+    width: 40px;
+    border-radius: 100%;
+    object-fit: cover;
+    object-position: center;
+    cursor: pointer;
+  }
+  .logout-text {
+    display: none;
+  }
+  .profile-text {
+    display: inline-block;
+    font-weight: bolder;
+    font-size: 10px;
+    cursor: pointer;
+    color: white;
+  }
 }

@@ -1,5 +1,5 @@
-// export const host = "http://localhost:3000";
-export const host = "https://chatapp-be-un4s.onrender.com";
+export const host = "http://localhost:3000";
+// export const host = "https://chatapp-be-un4s.onrender.com";
 export const loginApi = `${host}/api/login`;
 export const registerApi = `${host}/api/register`;
 export const fetchChatApi = `${host}/api/fetchchat`;

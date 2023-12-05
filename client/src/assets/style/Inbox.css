@@ -100,3 +100,23 @@
 .inbox-send-message:active {
   transform: scale(0.9);
 }
+@media screen and (max-width: 1000px) {
+  .inbox-root-container {
+    width: 100%;
+    border-radius: 10px;
+    height: 80%;
+  }
+  .inbox-displaychat-container {
+    border-radius: 5px;
+    box-sizing: border-box;
+    height: 100%;
+  }
+  .inbox-message-input {
+    border-radius: 10px;
+    outline: none;
+    border: 1px solid black;
+  }
+  .inbox-send-message {
+    border-radius: 10px;
+  }
+}

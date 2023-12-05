@@ -84,6 +84,9 @@ function Users() {
     localStorage.clear();
     location.reload();
   };
+  const Profile = () => {
+    navigate("/profile");
+  };
 
   const userRenderArray = users.map((user, index) => {
     return (
@@ -99,7 +102,7 @@ function Users() {
             <img className="user-dp" src={user.dp} alt="" />
             <div className="user-username"> {user.username}</div>
           </div>
-          {activeUsers.includes(user.username) && (
+          {!activeUsers.includes(user.username) && (
             <div className="user-active-status"></div>
           )}
         </div>
@@ -137,6 +140,9 @@ function Users() {
         />
         <p onClick={handleLogout} className="logout-text">
           Logout
+        </p>
+        <p onClick={Profile} className="profile-text">
+          Profile
         </p>
       </div>
     </div>
