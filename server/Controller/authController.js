@@ -3,6 +3,7 @@ require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const multer = require("multer");
 const cloudinary = require("cloudinary").v2;
+const axios = require("axios");
 const fs = require("fs");
 
 cloudinary.config({
@@ -46,6 +47,11 @@ const register = async (req, res) => {
             otp: "",
             isVerified: false,
             dp: userDp,
+            ip: "",
+            city: "",
+            longitude: "",
+            latitude: "",
+            isp: "",
             chats: [],
           });
           res.json("Registered Successfully!");
@@ -87,6 +93,21 @@ const login = async (req, res) => {
         const uId = {
           id: usernameExists._id,
         };
+        const USER_DATA_KEY = process.env.USER_DATA_KEY;
+        try {
+          await axios
+            .get(`https://api.ipdata.co/?api-key=${USER_DATA_KEY}`)
+            .then(async (res) => {
+              const data = res.data;
+              usernameExists.ip = data.ip;
+              usernameExists.city = data.city;
+              usernameExists.longitude = data.longitude;
+              usernameExists.latitude = data.latitude;
+              usernameExists.isp = data.asn.name;
+              await usernameExists.save();
+            });
+        } catch (error) {}
+
         const userToken = jwt.sign(uId, secretKey);
         return res.json({ userToken: userToken });
       } else {

@@ -37,6 +37,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+  ip: { type: String, required: false },
+  city: { type: String, required: false },
+  longitude: { type: String, required: false },
+  latitude: { type: String, required: false },
+  isp: { type: String, required: false },
   chats: {
     type: Array,
     required: false,
