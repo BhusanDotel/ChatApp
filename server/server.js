@@ -15,7 +15,6 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-//mongodb://localhost:27017/ChatApp
 const mongoCloud_url = process.env.MONGO_CLOUD_URL;
 mongoose
   .connect(mongoCloud_url)

@@ -6,7 +6,7 @@ export const StateProvider = (props) => {
   const [myUserName, setMyUserName] = React.useState("empty");
   const [isLoggedIn, setLoggedIn] = React.useState(false);
 
-  React.useState(() => {
+  React.useEffect(() => {
     async function getLocalData() {
       const receiver = localStorage.getItem("receiver");
       const sender = localStorage.getItem("sender");
