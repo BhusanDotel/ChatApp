@@ -16,7 +16,7 @@ function Users() {
   const [users, setUsers] = React.useState([]);
   const [activeUsers, setActiveUsers] = React.useState([]);
   const [myDp, setMyDp] = React.useState("");
-  const [lastReceiveMessages, setLastReceiveMessages] = React.useState("");
+  const [lastReceiveMessages, setLastReceiveMessages] = React.useState([]);
   const [trigger, setTrigger] = React.useState(0);
   const navigate = useNavigate();
 
@@ -33,12 +33,14 @@ function Users() {
           myUserName,
         })
         .then((res) => {
-          if (res.data !== "something went wrong") {
-            const _data = res.data;
-            const parsedArray = _data.map((jsonString) =>
-              JSON.parse(jsonString)
-            );
-            setLastReceiveMessages(parsedArray);
+          if (res) {
+            if (res.data !== "something went wrong") {
+              const _data = res.data;
+              const parsedArray = _data.map((jsonString) =>
+                JSON.parse(jsonString)
+              );
+              setLastReceiveMessages(parsedArray);
+            }
           }
         });
     }
